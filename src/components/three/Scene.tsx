@@ -1,4 +1,3 @@
-import { Bloom, EffectComposer } from "@react-three/postprocessing";
 import { useAppStore } from "../../store/useAppStore";
 import { AtomView } from "./AtomView";
 import { ParticleBackground } from "./ParticleBackground";
@@ -9,7 +8,7 @@ export function Scene() {
 
   return (
     <>
-      <ambientLight intensity={0.4} />
+      <ambientLight intensity={0.5} />
       <pointLight position={[10, 10, 10]} intensity={1.5} />
       <pointLight position={[-10, -5, 5]} intensity={0.5} color="#4488ff" />
 
@@ -17,15 +16,6 @@ export function Scene() {
       <ParticleBackground />
 
       {selectedElement && <AtomView element={selectedElement} />}
-
-      <EffectComposer>
-        <Bloom
-          luminanceThreshold={0.5}
-          luminanceSmoothing={0.9}
-          intensity={1.5}
-          mipmapBlur
-        />
-      </EffectComposer>
     </>
   );
 }

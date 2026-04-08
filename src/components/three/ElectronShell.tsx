@@ -33,10 +33,11 @@ function Electron({
     <mesh ref={meshRef}>
       <sphereGeometry args={[0.06, 12, 12]} />
       <meshStandardMaterial
-        color="#00ddff"
-        emissive="#00ccff"
-        emissiveIntensity={3}
-        toneMapped={false}
+        color="#44ccff"
+        emissive="#0088cc"
+        emissiveIntensity={0.4}
+        roughness={0.3}
+        metalness={0.2}
       />
     </mesh>
   );
