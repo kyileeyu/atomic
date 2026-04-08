@@ -34,15 +34,19 @@ export function CameraController() {
     }
   });
 
+  const isAtom = viewMode === "atom";
+
   return (
     <OrbitControls
       ref={controlsRef}
-      enabled={viewMode === "atom"}
+      enableZoom
+      enableRotate={isAtom}
       enablePan={false}
-      minDistance={5}
-      maxDistance={25}
-      autoRotate={viewMode === "atom"}
+      minDistance={isAtom ? 5 : 15}
+      maxDistance={isAtom ? 25 : 50}
+      autoRotate={isAtom}
       autoRotateSpeed={0.5}
+      zoomSpeed={0.8}
     />
   );
 }
