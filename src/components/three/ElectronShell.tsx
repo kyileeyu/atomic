@@ -12,22 +12,21 @@ function Electron({
   radius,
   speed,
   angularOffset,
-  tiltMatrix,
 }: {
   radius: number;
   speed: number;
   angularOffset: number;
-  tiltMatrix: THREE.Matrix4;
 }) {
   const meshRef = useRef<THREE.Mesh>(null);
-  const pos = useMemo(() => new THREE.Vector3(), []);
 
   useFrame(({ clock }) => {
     if (!meshRef.current) return;
     const angle = clock.elapsedTime * speed + angularOffset;
-    pos.set(radius * Math.cos(angle), 0, radius * Math.sin(angle));
-    pos.applyMatrix4(tiltMatrix);
-    meshRef.current.position.copy(pos);
+    meshRef.current.position.set(
+      radius * Math.cos(angle),
+      0,
+      radius * Math.sin(angle)
+    );
   });
 
   return (
@@ -48,7 +47,6 @@ export function ElectronShell({
   electronCount,
   radius,
 }: ElectronShellProps) {
-  // Split into sub-rings if too many electrons
   const subRingCount = electronCount > 8 ? Math.ceil(electronCount / 8) : 1;
   const electronsPerRing = Math.ceil(electronCount / subRingCount);
 
@@ -59,18 +57,15 @@ export function ElectronShell({
       const count = Math.min(electronsPerRing, remaining);
       remaining -= count;
 
-      // Each sub-ring gets a unique tilt
-      const tiltX = ((shellIndex * 37 + r * 60) % 120) - 60;
-      const tiltZ = ((shellIndex * 53 + r * 45) % 80) - 40;
-      const matrix = new THREE.Matrix4().makeRotationFromEuler(
-        new THREE.Euler(
-          THREE.MathUtils.degToRad(tiltX),
-          0,
-          THREE.MathUtils.degToRad(tiltZ)
-        )
+      // Each sub-ring gets a unique tilt as Euler angles
+      const tiltX = THREE.MathUtils.degToRad(
+        ((shellIndex * 37 + r * 60) % 120) - 60
+      );
+      const tiltZ = THREE.MathUtils.degToRad(
+        ((shellIndex * 53 + r * 45) % 80) - 40
       );
 
-      rings.push({ count, tiltMatrix: matrix, ringIndex: r });
+      rings.push({ count, tiltX, tiltZ, ringIndex: r });
     }
     return rings;
   }, [shellIndex, electronCount, subRingCount, electronsPerRing]);
@@ -80,19 +75,22 @@ export function ElectronShell({
   return (
     <group>
       {subRings.map((ring) => (
-        <group key={ring.ringIndex}>
-          {/* Orbital ring */}
+        // Apply the SAME rotation to both the ring and the electrons
+        <group
+          key={ring.ringIndex}
+          rotation={[ring.tiltX, 0, ring.tiltZ]}
+        >
+          {/* Orbital ring - lies in XZ plane, so rotate to XZ */}
           <mesh rotation-x={Math.PI / 2}>
             <torusGeometry args={[radius, 0.008, 8, 64]} />
             <meshBasicMaterial
               color="#00ddff"
               transparent
-              opacity={0.08}
-              // Apply same tilt via parent
+              opacity={0.1}
             />
           </mesh>
 
-          {/* Electrons */}
+          {/* Electrons - orbit in XZ plane, matching the ring */}
           {Array.from({ length: ring.count }).map((_, i) => (
             <Electron
               key={i}
@@ -102,7 +100,6 @@ export function ElectronShell({
                 (i / ring.count) * Math.PI * 2 +
                 ring.ringIndex * (Math.PI / subRingCount)
               }
-              tiltMatrix={ring.tiltMatrix}
             />
           ))}
         </group>
