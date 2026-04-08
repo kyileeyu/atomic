@@ -16,7 +16,7 @@ export const ElementCell = memo(function ElementCell({
   const searchQuery = useAppStore((s) => s.searchQuery);
   const activeCategory = useAppStore((s) => s.activeCategory);
 
-  const style = CATEGORY_STYLES[element.category];
+  const catStyle = CATEGORY_STYLES[element.category];
 
   const isFiltered =
     (searchQuery &&
@@ -27,13 +27,21 @@ export const ElementCell = memo(function ElementCell({
 
   return (
     <motion.button
-      className={`relative flex flex-col items-center justify-center rounded-sm border border-white/10 p-0.5 cursor-pointer select-none transition-colors ${style.bg} hover:border-white/30 hover:brightness-125`}
+      className="relative flex flex-col items-center justify-center rounded-sm border border-white/10 p-1 cursor-pointer select-none aspect-square min-h-[40px]"
       style={{
         gridColumn: element.gridColumn,
         gridRow: element.gridRow,
         opacity: isFiltered ? 0.15 : 1,
+        backgroundColor: `${catStyle.color}22`,
+        borderLeftColor: catStyle.color,
+        borderLeftWidth: 2,
       }}
-      whileHover={{ scale: 1.15, zIndex: 10 }}
+      whileHover={{
+        scale: 1.2,
+        zIndex: 10,
+        backgroundColor: `${catStyle.color}44`,
+        borderColor: `${catStyle.color}88`,
+      }}
       whileTap={{ scale: 0.95 }}
       onClick={() => selectElement(element)}
       onMouseEnter={() => setHovered(element)}
@@ -43,7 +51,10 @@ export const ElementCell = memo(function ElementCell({
       <span className="text-[8px] leading-none text-white/50">
         {element.atomicNumber}
       </span>
-      <span className={`text-sm font-bold leading-tight ${style.textColor}`}>
+      <span
+        className="text-sm font-bold leading-tight"
+        style={{ color: catStyle.color }}
+      >
         {element.symbol}
       </span>
       <span className="text-[7px] leading-none text-white/40 truncate w-full text-center">

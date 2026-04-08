@@ -6,7 +6,13 @@ interface InfoPanelProps {
   element: Element;
 }
 
-function InfoRow({ label, value }: { label: string; value: string | number | null }) {
+function InfoRow({
+  label,
+  value,
+}: {
+  label: string;
+  value: string | number | null;
+}) {
   if (value === null || value === undefined) return null;
   return (
     <div className="flex justify-between py-1.5 border-b border-white/5">
@@ -17,7 +23,7 @@ function InfoRow({ label, value }: { label: string; value: string | number | nul
 }
 
 export function InfoPanel({ element }: InfoPanelProps) {
-  const style = CATEGORY_STYLES[element.category];
+  const catStyle = CATEGORY_STYLES[element.category];
 
   return (
     <motion.div
@@ -31,7 +37,10 @@ export function InfoPanel({ element }: InfoPanelProps) {
         {/* Header */}
         <div className="mb-6">
           <div className="flex items-baseline gap-3 mb-1">
-            <span className={`text-6xl font-bold ${style.textColor}`}>
+            <span
+              className="text-6xl font-bold"
+              style={{ color: catStyle.color }}
+            >
               {element.symbol}
             </span>
             <span className="text-white/30 text-lg font-mono">
@@ -43,9 +52,13 @@ export function InfoPanel({ element }: InfoPanelProps) {
           </h2>
           <p className="text-white/40 text-sm">{element.nameKo}</p>
           <span
-            className={`inline-block mt-2 rounded-full px-3 py-0.5 text-xs ${style.bg} ${style.textColor}`}
+            className="inline-block mt-2 rounded-full px-3 py-0.5 text-xs"
+            style={{
+              backgroundColor: `${catStyle.color}22`,
+              color: catStyle.color,
+            }}
           >
-            {style.labelKo}
+            {catStyle.labelKo}
           </span>
         </div>
 

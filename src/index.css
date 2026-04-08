@@ -1,22 +1,5 @@
 @import "tailwindcss";
 
-@theme {
-  --font-sans: "Inter", system-ui, -apple-system, sans-serif;
-  --font-mono: ui-monospace, "Cascadia Code", Consolas, monospace;
-
-  --color-alkali-metal: #ef4444;
-  --color-alkaline-earth: #f97316;
-  --color-transition-metal: #eab308;
-  --color-post-transition-metal: #84cc16;
-  --color-metalloid: #22c55e;
-  --color-nonmetal: #06b6d4;
-  --color-halogen: #3b82f6;
-  --color-noble-gas: #a855f7;
-  --color-lanthanide: #ec4899;
-  --color-actinide: #f43f5e;
-  --color-unknown: #6b7280;
-}
-
 * {
   margin: 0;
   padding: 0;
@@ -26,7 +9,7 @@
 body {
   background: #030712;
   color: #f9fafb;
-  font-family: var(--font-sans);
+  font-family: system-ui, -apple-system, sans-serif;
   overflow: hidden;
   width: 100vw;
   height: 100vh;

@@ -29,14 +29,15 @@ export function CategoryLegend() {
           <button
             key={cat}
             onClick={() => setActiveCategory(cat)}
-            className={`flex items-center gap-1.5 rounded-full px-3 py-1 text-[10px] transition-all border ${
+            className={`flex items-center gap-1.5 rounded-full px-3 py-1 text-[10px] transition-all border cursor-pointer ${
               isActive
                 ? "border-white/30 bg-white/10"
                 : "border-transparent bg-white/5 hover:bg-white/10"
             }`}
           >
             <span
-              className={`inline-block h-2 w-2 rounded-full ${style.bg.replace("/20", "")}`}
+              className="inline-block h-2 w-2 rounded-full"
+              style={{ backgroundColor: style.color }}
             />
             <span className="text-white/60">{style.labelKo}</span>
           </button>

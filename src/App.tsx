@@ -18,16 +18,21 @@ function App() {
   return (
     <div className="relative h-screen w-screen overflow-hidden bg-gray-950">
       {/* 3D Canvas - always rendered behind */}
-      <Canvas
+      <div
         className="absolute inset-0"
-        camera={{ position: [0, 0, 30], fov: 45 }}
-        gl={{ antialias: true, alpha: true }}
+        style={{ zIndex: 0, pointerEvents: showAtom ? "auto" : "none" }}
       >
-        <Scene />
-      </Canvas>
+        <Canvas
+          camera={{ position: [0, 0, 30], fov: 45 }}
+          gl={{ antialias: true, alpha: true }}
+          style={{ width: "100%", height: "100%" }}
+        >
+          <Scene />
+        </Canvas>
+      </div>
 
       {/* 2D UI overlay */}
-      <div className="relative z-10 h-full flex flex-col">
+      <div className="relative h-full flex flex-col" style={{ zIndex: 1 }}>
         <AnimatePresence mode="wait">
           {showTable && (
             <motion.div
@@ -36,7 +41,7 @@ function App() {
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               transition={{ duration: 0.4 }}
-              className="flex flex-col h-full"
+              className="flex flex-col h-full bg-gray-950/80 backdrop-blur-sm"
             >
               {/* Header */}
               <div className="flex items-center justify-between px-6 py-4">
@@ -52,7 +57,7 @@ function App() {
               </div>
 
               {/* Table */}
-              <div className="flex-1 flex items-center justify-center overflow-auto">
+              <div className="flex-1 flex items-center justify-center overflow-auto px-2">
                 <PeriodicTable />
               </div>
 
@@ -76,7 +81,7 @@ function App() {
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: 20 }}
                 transition={{ delay: 0.3 }}
-                className="fixed bottom-8 left-8 z-20"
+                className="fixed bottom-8 left-8 z-20 pointer-events-none"
               >
                 <p className="text-white/20 text-sm font-mono">
                   {selectedElement.electronConfiguration}
